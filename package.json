@@ -1,0 +1,21 @@
+{
+  "name": "webprojects",
+  "version": "1.0.0",
+  "description": "A web version of the game 'Codenames'",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "nodemon app.js"
+  },
+  "dependencies": {
+    "express": "4.17.1",
+    "nodemon": "^2.0.4"
+  },
+  "keywords": [
+    "sample",
+    "nodejs",
+    "Socketio"
+  ],
+  "author": "Christopher Linscott",
+  "license": "MIT"
+}
