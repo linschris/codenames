@@ -5,14 +5,14 @@ const app = express()
 const port = process.env.PORT || 3000;
 const http = require('http').Server(app)
 const io = require("socket.io")(http)
-const rooms = [];
+let rooms = []
 
 /* Directory page files */
-let homePage = __dirname+ '/public/index.html'
-let gamePage = __dirname+ '/public/game.html'
+const homePage = __dirname+ '/public/index.html'
+const gamePage = __dirname+ '/public/game.html'
 
 app.use(express.static(path.join(__dirname, 'public')))
-/* GET handlers --> take in the clinet's request (req) and respond (res) with a file or message*/
+/* GET handlers --> take in the client's request (req) and respond (res) with a file or message*/
 /* Home page --> Give client homepage */
 app.get('/', (req, res) => {
     res.sendFile(homePage)
@@ -37,11 +37,11 @@ io.on('connection', (socket) => {
         console.log(`User ${user} has joined ${room} with password ${pass}`)
     })
 
-    socket.on('createRoom', ({user, room, pass}) => {
-        console.log(`User ${user} has created ${room} with password ${pass}`)
+    socket.on('createRoom', ({user, id, pass}) => {
+        console.log(`User ${user} has created room ${id} with password ${pass}`)
         const newRoom = { 
-            id: room,
-            pass: pass,
+            id,
+            pass,
             sockets: []
         }
         rooms[newRoom.id] = newRoom;
@@ -50,16 +50,9 @@ io.on('connection', (socket) => {
         console.log(newRoom.sockets);
         //callback();
     })
-
-
 })
-
-
-
 
 /* http.listen() -> tells server to listen at a port (3000) */
 http.listen(port, function() {
     console.log("Server is listening on port: ", port)
 })
-
-
