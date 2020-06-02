@@ -1,0 +1,16 @@
+html, body {
+    position: relative;
+    padding: 0 auto;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    background-color: #ffffff;
+}
+
+
+#title-header {
+    padding: 20px;
+}
+
+#create-box {
+    margin: 20px auto;
+}
