@@ -14,3 +14,12 @@ html, body {
 #create-box {
     margin: 20px auto;
 }
+
+
+#game-body {
+    display: none;
+}
+
+#lobby-body {
+    display: block;
+}

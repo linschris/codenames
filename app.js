@@ -29,26 +29,45 @@ io.on('connection', (socket) => {
     })
 
     socket.on('joinRoom', ({user, id, pass}) => {
-        //const player = userJoin(socket.id, username, room);
-        socket.join(id);
-        socket.to(id).emit('message', 'A user has joined the server.')
-        console.log(id);
-
-        console.log(`User ${user} has joined room ${id} with password ${pass}`)
+        console.log(`User ${user} wants to join room ${id} with password ${pass}`)
+        let roomToJoin = rooms.find(createdRoom => createdRoom.id == room)
+        if((user === '') || (id === '') || (pass === '')) {
+            socket.emit('error-message', 'You left something empty.')
+        }
+        else if(roomToJoin === undefined) {
+                socket.emit('error-message', 'Room not found.')
+        }
+        else if(roomToJoin.pass !== pass) {
+            socket.emit('error-message', 'Password incorrect.')
+        }
+        else {
+            socket.join(id);
+            socket.to(id).emit('message', 'A user has joined the server.')
+            console.log(id);
+            console.log(`User ${user} has joined room ${id} with password ${pass}`)
+            roomToJoin.sockets.push(user)
+            console.log(roomToJoin.sockets)
+            console.log(roomToJoin);
+        }
     })
 
     socket.on('createRoom', ({user, id, pass}) => {
-        console.log(`User ${user} has created room ${id} with password ${pass}`)
-        const newRoom = { 
-            id,
-            pass,
-            sockets: []
+        if((user === '') || (id === '') || (pass === '')) {
+            socket.emit('error-message', 'You have left something empty')
         }
-        rooms[newRoom.id] = newRoom;
-        console.log(newRoom)
-        socket.join(newRoom);
-        console.log(newRoom.sockets);
-        //callback();
+        else {
+            let newRoom = {
+                id,
+                pass,
+                sockets: []
+            }
+            rooms[newRoom.id] = newRoom;
+            console.log(`Client ${user} wants to create ${id} with password ${pass}`)
+            socket.join(newRoom)
+            newRoom.sockets.push(user);
+            console.log(newRoom.sockets)
+            //socket.emit('putInGame')
+        }    
     })
 })
 
