@@ -3,23 +3,14 @@ html, body {
     padding: 0 auto;
     overflow-y: hidden;
     overflow-x: hidden;
+    background-color: #ffffff;
 }
 
 
 #title-header {
-    text-align: center;
-}
-
-#createARoom {
-    background-color: aliceblue;
-    margin-top: 25em;
+    padding: 20px;
 }
 
 #create-box {
-    position: relative;
-    background-color: blanchedalmond;
-    top: 2em;
-    margin: 0 auto;
-    width: 20em;
-    height: 20em;
+    margin: 20px auto;
 }

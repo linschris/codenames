@@ -40,16 +40,16 @@ createARoomForm.addEventListener('submit', (e) => {
 function createRoom() {
     let createARoomForm = document.getElementById('create-a-room')
     let user = createARoomForm.username.value;
-    let room = createARoomForm.roomid.value;
+    let id = createARoomForm.roomid.value;
     let pass = createARoomForm.password.value;
-    socket.emit('createRoom', {user, room, pass})
+    socket.emit('createRoom', {user, id, pass})
 }
 
 function joinRoom() {
     let createARoomForm = document.getElementById('create-a-room')
     let user = createARoomForm.username.value;
-    let room = createARoomForm.roomid.value;
+    let id = createARoomForm.roomid.value;
     let pass = createARoomForm.password.value;
-    socket.emit('createRoom', {user, room, pass})
+    socket.emit('createRoom', {user, id, pass})
 }
 

@@ -28,13 +28,13 @@ io.on('connection', (socket) => {
         io.emit('message', 'A user has left the server.')
     })
 
-    socket.on('joinRoom', ({user, room, pass}) => {
+    socket.on('joinRoom', ({user, id, pass}) => {
         //const player = userJoin(socket.id, username, room);
-        socket.join(room);
-        socket.to(room).emit('message', 'A user has joined the server.')
-        console.log(room);
+        socket.join(id);
+        socket.to(id).emit('message', 'A user has joined the server.')
+        console.log(id);
 
-        console.log(`User ${user} has joined ${room} with password ${pass}`)
+        console.log(`User ${user} has joined room ${id} with password ${pass}`)
     })
 
     socket.on('createRoom', ({user, id, pass}) => {
