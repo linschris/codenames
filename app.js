@@ -5,7 +5,8 @@ const app = express()
 const port = process.env.PORT || 3000;
 const http = require('http').Server(app)
 const io = require("socket.io")(http)
-let rooms = []
+let rooms = {}
+let gameMap = {}
 
 /* Directory page files */
 const homePage = __dirname+ '/public/index.html'
@@ -30,7 +31,7 @@ io.on('connection', (socket) => {
 
     socket.on('joinRoom', ({user, id, pass}) => {
         console.log(`User ${user} wants to join room ${id} with password ${pass}`)
-        let roomToJoin = rooms.find(createdRoom => createdRoom.id == room)
+        let roomToJoin = rooms[id];
         if((user === '') || (id === '') || (pass === '')) {
             socket.emit('error-message', 'You left something empty.')
         }
@@ -48,27 +49,48 @@ io.on('connection', (socket) => {
             roomToJoin.sockets.push(user)
             console.log(roomToJoin.sockets)
             console.log(roomToJoin);
+            console.log("gameMap: ", gameMap[id])
+            socket.emit('joinGame', id, gameMap[id])
         }
     })
 
     socket.on('createRoom', ({user, id, pass}) => {
         if((user === '') || (id === '') || (pass === '')) {
-            socket.emit('error-message', 'You have left something empty')
+            socket.emit('error-message', 'You have left something empty.')
+        }
+        else if(rooms[id] !== undefined) {
+            socket.emit('error-message', 'This room already exists.')
         }
         else {
             let newRoom = {
                 id,
                 pass,
-                sockets: []
+                sockets: [],
             }
             rooms[newRoom.id] = newRoom;
             console.log(`Client ${user} wants to create ${id} with password ${pass}`)
-            socket.join(newRoom)
+            socket.join(id)
             newRoom.sockets.push(user);
-            console.log(newRoom.sockets)
-            //socket.emit('putInGame')
+            socket.emit('putInGame', id)
         }    
     })
+
+    socket.on('game', (currentGame, id) => {
+        gameMap[id] = currentGame;
+    })
+
+
+    socket.on('gamePieceClick', (gamePieceID, gameRoom) => { 
+        socket.emit('clickGamePiece', gamePieceID)
+        socket.to(gameRoom).emit('clickGamePiece', gamePieceID)
+    })
+
+
+    socket.on('new-game', (id) => {
+        socket.emit('new-game')
+        socket.to(id).emit('new-game')
+    })
+
 })
 
 /* http.listen() -> tells server to listen at a port (3000) */

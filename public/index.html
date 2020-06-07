@@ -72,35 +72,18 @@
 	 <!-- Codenames Game HTML Code -->
 	<div id="game-body">
         <div id="title">Codenames</div>
-        <div id="teamBoard-container">
-            <div id="teamBoard" class="team-row">
-                <ul id="redTeam" class="team-column">
-                    Red Team:
-                </ul>
-                <ul id="blueTeam" class="team-column">
-                    Blue Team:
-                </ul>
-            </div>
-        </div>
-        <button id="join-red-team" onclick='addPlayerRed()'>Join Red Team</button>
-        <button id="join-blue-team" onclick='addPlayerBlue()'>Join Blue Team</button>
         <div id="gameScore">Score:</div>
         <div id="gameTurn"></div>
         <div id="gameBoard">
-            <div class="game-piece" id="game-piece1"></div><div class="game-piece" id="game-piece2"></div><div class="game-piece" id="game-piece3"></div><div class="game-piece" id="game-piece4"></div><div class="game-piece" id="game-piece5"></div> <br>
-            <div class="game-piece" id="game-piece6"></div><div class="game-piece" id="game-piece7"></div><div class="game-piece" id="game-piece8"></div><div class="game-piece" id="game-piece9"></div><div class="game-piece" id="game-piece10"></div> <br>
-            <div class="game-piece" id="game-piece11"></div><div class="game-piece" id="game-piece12"></div><div class="game-piece" id="game-piece13"></div><div class="game-piece" id="game-piece14"></div><div class="game-piece" id="game-piece15"></div> <br>
-            <div class="game-piece" id="game-piece16"></div><div class="game-piece" id="game-piece17"></div><div class="game-piece" id="game-piece18"></div><div class="game-piece" id="game-piece19"></div><div class="game-piece" id="game-piece20"></div> <br>
-            <div class="game-piece" id="game-piece21"></div><div class="game-piece" id="game-piece22"></div><div class="game-piece" id="game-piece23"></div><div class="game-piece" id="game-piece24"></div><div class="game-piece" id="game-piece25"></div> <br>
-        </div>
-        <button id="spymaster-button" onclick="makeAllVisible()">Spymaster</button>
-        <button id="guesser-button" onclick="makeAllInvisibleButClicked()">Guesser</button>
-        <button id="new-game-button" onclick="setUpNewBoard()">New Game</button>
+		</div>
+        <button id="spymaster-button">Spymaster</button>
+        <button id="guesser-button">Guesser</button>
+        <button id="new-game-button">New Game</button>
   </div>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.4/qs.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
-<script src="/assets/scripts/main.js"></script>
 <script type="text/javascript" src="/assets/scripts/words.js"></script>
 <script type="text/javascript" src="/assets/scripts/script.js"></script>
+<script src="/assets/scripts/main.js"></script>
 </html>
