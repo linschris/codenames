@@ -51,6 +51,8 @@ io.on('connection', (socket) => {
             console.log(roomToJoin);
             console.log("gameMap: ", gameMap[id])
             socket.emit('joinGame', id, gameMap[id])
+            socket.emit('updateUsers', rooms[id].sockets)
+            socket.to(id).emit('updateUsers', rooms[id].sockets)
         }
     })
 
@@ -72,11 +74,14 @@ io.on('connection', (socket) => {
             socket.join(id)
             newRoom.sockets.push(user);
             socket.emit('putInGame', id)
+            socket.emit('updateUsers', rooms[id].sockets)
         }    
     })
 
-    socket.on('game', (currentGame, id) => {
-        gameMap[id] = currentGame;
+    socket.on('game', (currentGame, roomID) => {
+        gameMap[roomID] = currentGame;
+        //socket.emit('addData', currentGame)
+        socket.broadcast.to(roomID).emit('addData', currentGame)
     })
 
 
@@ -86,9 +91,8 @@ io.on('connection', (socket) => {
     })
 
 
-    socket.on('new-game', (id) => {
+    socket.on('new-game', function() {
         socket.emit('new-game')
-        socket.to(id).emit('new-game')
     })
 
 })

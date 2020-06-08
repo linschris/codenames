@@ -73,13 +73,21 @@
 	<div id="game-body">
         <div id="title">Codenames</div>
         <div id="gameScore">Score:</div>
-        <div id="gameTurn"></div>
-        <div id="gameBoard">
+		<div id="gameTurn"></div>
+		<div id="teamBoard-container">
+			<div id="teamBoard">
+				<div id="red-user-team" class="team-column">Red Team</div>
+				<div id = "blue-user-team"  class="team-column">Blue Team</div>
+
+			</div>
 		</div>
-        <button id="spymaster-button">Spymaster</button>
-        <button id="guesser-button">Guesser</button>
-        <button id="new-game-button">New Game</button>
-  </div>
+		<div id="gameBoard">
+		
+		</div>
+		<button id="spymaster-button">Spymaster</button>
+		<button id="guesser-button">Guesser</button>
+		<button id="new-game-button">New Game</button>
+	</div>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.4/qs.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>

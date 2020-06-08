@@ -6,6 +6,7 @@ let guesserButton = document.getElementById('guesser-button')
 let spymasterButton = document.getElementById('spymaster-button')
 let currentGame = new Game();
 let roomID;
+let users = [];
 
 
 createButton.addEventListener("click", () => {
@@ -15,7 +16,7 @@ joinButton.addEventListener("click", () => {
     joinRoom();
 })
 newGameButton.addEventListener("click", () => {
-    socket.emit('new-game', roomID)
+    makeNewGame()
 })
 guesserButton.addEventListener("click", () => {
     currentGame.makeAllInvisibleButClicked();
@@ -43,6 +44,7 @@ socket.on('putInGame', function(id) {
 
 socket.on('joinGame', function(id, gameData) {
     joinGame(id, gameData);
+    roomID = id;
 })
 
 socket.on('clickGamePiece', function(gamePieceID) {
@@ -51,11 +53,18 @@ socket.on('clickGamePiece', function(gamePieceID) {
     currentGame.showGamePiece(gamePieceID);
 })
 
-socket.on('new-game', function() {
-    console.log('NEW GAME COMING TO USER')
+
+socket.on('addData', game => {
+    console.log( 'adding in data for new Game'
+    )
     currentGame = new Game();
-    currentGame.setUpGameValues();
-    currentGame.newBoard();
+    currentGame.makeNewGame(game)
+})
+
+socket.on('updateUsers', roomSockets => {
+    users = roomSockets
+    console.log('Users in lobby are: ' + users)
+    currentGame.updateUsers(users)
 })
 
 
@@ -113,4 +122,11 @@ function joinGame(id, gameData) {
     currentGame.addinData(gameData)
     currentGame.renderBoard();
     allowButtonsToBeClicked(id)
+}
+
+function makeNewGame() {
+    console.log('NEW GAME COMING TO USER')
+    currentGame = new Game();
+    currentGame.newBoard();
+    socket.emit('game', currentGame, roomID);
 }

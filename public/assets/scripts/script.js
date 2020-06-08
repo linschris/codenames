@@ -28,6 +28,8 @@ class Game {
         this.maxNeutral = 7;
         this.gameWords = [];
         this.teams = [];
+        this.redTeam = [];
+        this.blueTeam = [];
         //Game functions
     }
 
@@ -39,6 +41,11 @@ class Game {
         this.gameWords = gameData.gameWords;
         this.teams = gameData.teams;
         this.decideTurn();
+    }
+
+    makeNewGame(gameData) {
+        this.addinData(gameData)
+        this.reWriteBoard()
     }
 
     setUpGameValues() {
@@ -197,7 +204,17 @@ class Game {
 
     newBoard() {
         this.clearBoard()
+        this.setUpGameValues()
         this.newWordsAndTeams()
+        this.makeAllInvisible()
+        this.adjustScore()
+    }
+
+    reWriteBoard() {
+        this.clearBoard()
+        this.newWordsAndTeams()
+        this.makeAllInvisible()
+        this.adjustScore()
     }
 
     newWordsAndTeams() {
@@ -219,9 +236,63 @@ class Game {
 
     renderTeamBoard() {
         let teamBoard = document.getElementById("teamBoard")
-
+        let redUserTeam = document.getElementById("red-user-team")
+        let blueUserTeam = document.getElementById("blue-user-team")
+        for(let i = 0; i < this.redTeam.length; i++) {
+            redUserTeam.innerHTML +=`<li>${this.redTeam[i]}</li>`
+        }
+        for(let i = 0; i < this.blueTeam.length; i++) {
+            blueUserTeam.innerHTML +=`<li>${this.blueTeam[i]}</li>`
+        }
     }
 
+
+    updateUsers(userArray) {
+        this.users = userArray
+        this.clearTeamBoard()
+        this.randomizeTeams()
+        this.renderTeamBoard()
+    }
+
+    clearTeamBoard() {
+        let redUserTeam = document.getElementById("red-user-team")
+        let blueUserTeam = document.getElementById("blue-user-team")
+        this.redTeam = []
+        this.blueTeam = []
+        redUserTeam.innerHTML = 'Red Team:'
+        blueUserTeam.innerHTML = 'Blue Team:'
+    }
+
+    randomizeTeams() {
+        console.log(this.users)
+        let numUsers = this.users.length;    
+        //this.users = this.shuffleUsers()
+        console.log(this.users)
+        for(let i = 0; i < this.users.length; i++) {
+            console.log(i + " " + this.users[i])
+            if(i % 2 == 0) {
+                this.redTeam.push(this.users[i])
+            }
+            else {
+                this.blueTeam.push(this.users[i])
+            }
+        }
+        console.log(this.users)
+        console.log(this.redTeam)
+        console.log(this.blueTeam)
+    }
+
+    shuffleUsers() {
+        let currentIndex = this.users.length
+        while(currentIndex !== 0) {
+            var randomIndex = Math.floor(Math.random() * currentIndex)
+            currentIndex -= 1
+            var temporaryValue = this.users[randomIndex];
+            this.users[currentIndex] = this.users[randomIndex]
+            this.users[randomIndex] = temporaryValue
+        }
+        return this.users
+    }
 
 }
 
