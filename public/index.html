@@ -3,9 +3,10 @@
 	<head>
 		<title> Codenames </title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
 		<link rel="stylesheet" href="assets/styles/stylesheet.css">
 		<link rel="stylesheet" href="assets/styles/stylesheet-game.css">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+		<link rel="stylesheet" href="https://unpkg.com/bulmaswatch/cyborg/bulmaswatch.min.css">
 		<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 	</head>
 	<body>
@@ -74,19 +75,31 @@
         <div id="title">Codenames</div>
         <div id="gameScore">Score:</div>
 		<div id="gameTurn"></div>
-		<div id="teamBoard-container">
-			<div id="teamBoard">
-				<div id="red-user-team" class="team-column">Red Team</div>
-				<div id = "blue-user-team"  class="team-column">Blue Team</div>
-
+		<div class="container is-fluid" id="teamBoard-container">
+			<div class="columns">
+				<div id="red-user-team" class="column is-danger">
+					Red Team
+				</div>
+				<div id ="blue-user-team" class="column is-info">
+					Blue Team
+				</div>
 			</div>
 		</div>
 		<div id="gameBoard">
 		
 		</div>
-		<button id="spymaster-button">Spymaster</button>
-		<button id="guesser-button">Guesser</button>
-		<button id="new-game-button">New Game</button>
+		<button id="spymaster-button" class="button is-dark">Spymaster</button>
+		<button id="guesser-button" class="button is-dark">Guesser</button>
+		<button id="new-game-button" class="button is-dark">New Game</button>
+		<footer class="footer" id="footer">
+			<div class="content has-text-centered">
+			  <p>
+				<strong>Codenames</strong> by <a href="https://github.com/linschris">Christopher Linscott</a>. The source code is licensed
+				<a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The original source code can 
+				be found on <a href="https://github.com/linschris/codenames-remake">Github</a>.
+			  </p>
+			</div>
+		  </footer>
 	</div>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.4/qs.min.js"></script>

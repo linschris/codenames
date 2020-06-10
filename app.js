@@ -7,6 +7,7 @@ const http = require('http').Server(app)
 const io = require("socket.io")(http)
 let rooms = {}
 let gameMap = {}
+let userMap = undefined;
 
 /* Directory page files */
 const homePage = __dirname+ '/public/index.html'
@@ -41,6 +42,9 @@ io.on('connection', (socket) => {
         else if(roomToJoin.pass !== pass) {
             socket.emit('error-message', 'Password incorrect.')
         }
+        else if(roomToJoin.sockets.find(userName => user == userName) !== undefined) {
+            socket.emit('error-message', 'Username taken.')
+        }
         else {
             socket.join(id);
             socket.to(id).emit('message', 'A user has joined the server.')
@@ -53,6 +57,7 @@ io.on('connection', (socket) => {
             socket.emit('joinGame', id, gameMap[id])
             socket.emit('updateUsers', rooms[id].sockets)
             socket.to(id).emit('updateUsers', rooms[id].sockets)
+            socket.emit('createUserMap', socket.id, user)
         }
     })
 
@@ -75,6 +80,7 @@ io.on('connection', (socket) => {
             newRoom.sockets.push(user);
             socket.emit('putInGame', id)
             socket.emit('updateUsers', rooms[id].sockets)
+            socket.emit('createUserMap', socket.id, user)
         }    
     })
 
@@ -85,11 +91,26 @@ io.on('connection', (socket) => {
     })
 
 
-    socket.on('gamePieceClick', (gamePieceID, gameRoom) => { 
-        socket.emit('clickGamePiece', gamePieceID)
-        socket.to(gameRoom).emit('clickGamePiece', gamePieceID)
+    socket.on('gamePieceClick', (gamePieceID, gameRoom, userID) => { 
+        socket.emit('clickGamePiece', gamePieceID, userID)
+        socket.to(gameRoom).emit('clickGamePiece', gamePieceID, userID)
     })
 
+
+    socket.on('userMap', (roomID, userIDs) => {
+        console.log('USERID: ', userIDs)
+        console.log('ROOMID: ', roomID)
+        if(userMap !== undefined) {
+            let newUserMap = { ...userMap, ...userIDs }
+            userMap = newUserMap 
+        }
+        else {
+            userMap = userIDs
+        }
+        console.log('userMap: ', userMap)
+        socket.emit('updateUserMap', userMap)
+        socket.to(roomID).emit('updateUserMap', userMap)
+    })
 
     socket.on('new-game', function() {
         socket.emit('new-game')

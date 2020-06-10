@@ -30,6 +30,7 @@ class Game {
         this.teams = [];
         this.redTeam = [];
         this.blueTeam = [];
+        this.users = [];
         //Game functions
     }
 
@@ -239,15 +240,34 @@ class Game {
         let redUserTeam = document.getElementById("red-user-team")
         let blueUserTeam = document.getElementById("blue-user-team")
         for(let i = 0; i < this.redTeam.length; i++) {
-            redUserTeam.innerHTML +=`<li>${this.redTeam[i]}</li>`
+            redUserTeam.innerHTML +=`
+            <section class="hero is-danger">
+                <div class="hero-body">
+                    <div class="container">
+                        <h1 class="title">
+                            ${this.redTeam[i]}
+                        </h1>
+                    </div>
+                </div>
+            </section>`
         }
         for(let i = 0; i < this.blueTeam.length; i++) {
-            blueUserTeam.innerHTML +=`<li>${this.blueTeam[i]}</li>`
+            blueUserTeam.innerHTML +=`
+            <section class="hero is-info">
+                <div class="hero-body">
+                    <div class="container">
+                        <h1 class="title">
+                            ${this.blueTeam[i]}
+                        </h1>
+                    </div>
+                </div>
+            </section>`
         }
     }
 
 
     updateUsers(userArray) {
+        console.log('userArray: ', userArray)
         this.users = userArray
         this.clearTeamBoard()
         this.randomizeTeams()
@@ -264,6 +284,7 @@ class Game {
     }
 
     randomizeTeams() {
+        console.log('randomizing teams')
         console.log(this.users)
         let numUsers = this.users.length;    
         //this.users = this.shuffleUsers()
@@ -292,6 +313,13 @@ class Game {
             this.users[randomIndex] = temporaryValue
         }
         return this.users
+    }
+
+    getRedTeam() {
+        return this.redTeam;
+    }
+    getBlueTeam() {
+        return this.blueTeam;
     }
 
 }

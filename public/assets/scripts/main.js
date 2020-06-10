@@ -7,7 +7,9 @@ let spymasterButton = document.getElementById('spymaster-button')
 let currentGame = new Game();
 let roomID;
 let users = [];
-
+let redTeam = [];
+let blueTeam = [];
+let userIDs = {}; //maps ids to usernames
 
 createButton.addEventListener("click", () => {
     createRoom();
@@ -47,10 +49,21 @@ socket.on('joinGame', function(id, gameData) {
     roomID = id;
 })
 
-socket.on('clickGamePiece', function(gamePieceID) {
+socket.on('clickGamePiece', (gamePieceID, userID) => {
     console.log("HIT HERE")
     console.log("CLICKED ON: ", gamePieceID)
-    currentGame.showGamePiece(gamePieceID);
+    let gamePiece = document.getElementById(gamePieceID)
+    let user = userIDs[userID]
+    console.log(userIDs)
+    console.log(userID)
+    console.log(user)
+    console.log(redTeam)
+    console.log(blueTeam)
+    console.log(redTeam.includes(user))
+    console.log(blueTeam.includes(user))
+    if(redTeam.includes(user) && currentGame.redTurn || blueTeam.includes(user) && currentGame.blueTurn) {
+        currentGame.showGamePiece(gamePieceID);
+    }
 })
 
 
@@ -65,9 +78,23 @@ socket.on('updateUsers', roomSockets => {
     users = roomSockets
     console.log('Users in lobby are: ' + users)
     currentGame.updateUsers(users)
+    redTeam = currentGame.redTeam;
+    blueTeam = currentGame.blueTeam;
 })
 
+socket.on('createUserMap', (user, userID) => {
+    userIDs[user] = userID;
+    console.log('dab', userIDs)
+    console.log(roomID)
+    socket.emit('userMap', roomID, userIDs)
+})
 
+socket.on('updateUserMap', (userMap) => {
+    let newUserMap = {...userIDs, ...userMap}
+    userIDs = newUserMap
+})
+
+socket.on('')
 
 function createRoom() {
     let createARoomForm = document.getElementById('create-a-room')
@@ -90,11 +117,26 @@ function allowButtonsToBeClicked(gameRoom) {
     document.querySelectorAll('.game-piece').forEach(item => {
         item.addEventListener('click', event => {
             let gamePieceID = event.path[0].id;
+            let userID = socket.id;
+            console.log("userID: " + userID)
             console.log(gamePieceID + " " + gameRoom)
-            socket.emit('gamePieceClick', gamePieceID, gameRoom)
+            socket.emit('gamePieceClick', gamePieceID, gameRoom, userID)
         })
     })
 }
+
+function disallowButtonsToBeClicked(gameRoom) {
+    document.querySelectorAll('.game-piece').forEach(item => {
+        item.removeEventListener('click', event => {
+            let gamePieceID = event.path[0].id;
+            let userID = socket.id;
+            console.log("userID: " + userID)
+            socket.emit('gamePieceClick', gamePieceID, gameRoom, userID)
+        })
+    })
+}
+
+    
 
 
 
@@ -107,6 +149,8 @@ function putInGame(id) {
     gameBody.style.backgroundColor = 'black';
     currentGame.setUpGameValues();
     currentGame.renderBoard();
+    redTeam = currentGame.redTeam;
+    blueTeam = currentGame.blueTeam;
     socket.emit('game', currentGame, id)
     allowButtonsToBeClicked(id);
 }
@@ -121,6 +165,8 @@ function joinGame(id, gameData) {
     gameBody.style.backgroundColor = 'black';
     currentGame.addinData(gameData)
     currentGame.renderBoard();
+    redTeam = currentGame.redTeam;
+    blueTeam = currentGame.blueTeam;
     allowButtonsToBeClicked(id)
 }
 
