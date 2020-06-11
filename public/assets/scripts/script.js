@@ -55,13 +55,13 @@ class Game {
         for(let i = 1; i <= 25; i++) {
             let randomNumber = Math.round(Math.random() * words.length);
             let randomWord = words[randomNumber];
-            this.gameWords.push(randomWord)
+            this.gameWords.push(randomWord)   
             this.calculateRandomTeams(this.numRed,this.numBlue,this.numDeath,this.numNeutral)
         }
     }
 
     adjustScore() {
-        document.getElementById("gameScore").innerHTML = 'Score:' + (this.teamRedScore - this.numRedFound) + '-' + (this.teamBlueScore - this.numBlueFound);
+        document.getElementById("gameScore").innerHTML = `Score:<span id="redScore">${(this.teamRedScore - this.numRedFound)}</span> - <span id="blueScore">${(this.teamBlueScore - this.numBlueFound)}</span>`;
         if(this.teamRedScore - this.numRedFound == 0) {
             let gameTurn = document.getElementById('gameTurn')
             gameTurn.innerHTML = "RED WINS!"
@@ -89,8 +89,8 @@ class Game {
         }
         for(let i = 1; i <= 25; i++) {
             let currentGamePiece = document.getElementById('game-piece'.concat(i));
-            if(!currentGamePiece.classList[1] == undefined) {
-                currentGamePiece.classList.remove(currentGamePiece.classList[1])
+            for(let i = 0; i < currentGamePiece.classList.length; i++) {
+                if(currentGamePiece.classList[i] == 'clicked') currentGamePiece.classList.remove(currentGamePiece.classList[i])
             }
         }
     }
@@ -120,11 +120,11 @@ class Game {
         currentGamePiece.classList.remove('invisible-to-guesser')
         if(!currentGamePiece.classList.contains('clicked')) {
             currentGamePiece.classList.add('clicked')
-            this.calculateST(id);
+            this.calculateScoreTurn(id);
         }
     }
 
-    calculateST(id) {
+    calculateScoreTurn(id) {
         let currentGamePiece = document.getElementById(id);
         if(currentGamePiece.classList.contains('team-red')) {
             this.numRedFound++;
@@ -159,6 +159,8 @@ class Game {
         this.redTurn = false;
         let gameTurn = document.getElementById('gameTurn')
         gameTurn.innerHTML = "Currently... Blue Turn."
+        gameTurn.classList.remove('team-red')
+        gameTurn.classList.add('team-blue')
     }
     
     makeRedTurn() {
@@ -166,6 +168,8 @@ class Game {
         this.blueTurn = false;   
         let gameTurn = document.getElementById('gameTurn')
         gameTurn.innerHTML = "Currently... Red Turn." 
+        gameTurn.classList.remove('team-blue')
+        gameTurn.classList.add('team-red')
     }
 
 
@@ -192,12 +196,23 @@ class Game {
         }
     }
 
+    //create columns element, create 5 card (class="column"), gameBoard.appendChild(card)
+
     renderBoard() { 
-       let gameBoard = document.getElementById("gameBoard") 
-       for(let i = 1; i <= this.gameWords.length; i++) {
-          gameBoard.innerHTML += `<div class="game-piece ${this.teams[i-1]}" id="game-piece${i}">${this.gameWords[i-1]}</div>`
-          if(i % 5 == 0) gameBoard.innerHTML += '<br>'
-       }
+    console.log(this.gameWords)
+       let gameBoard = document.getElementById("gameBoard")
+        for(let i = 0; i < 5; i++) {
+            var row = document.createElement('div')
+            row.classList.add('columns')
+            for(let j = 1; j <= 5; j++) { 
+                let currentColumn = document.createElement('div')
+                currentColumn.classList.add('column', 'is-one-fifths')
+                row.appendChild(currentColumn)
+                let currentCardNumber = (i*5) + j
+                currentColumn.innerHTML += `<div class="box game-piece ${this.teams[currentCardNumber-1]}" id="game-piece${currentCardNumber}">${this.gameWords[currentCardNumber-1]}</div>`
+            }
+            gameBoard.appendChild(row)
+        }
        this.makeAllInvisible();
        this.adjustScore();
     }
@@ -240,28 +255,10 @@ class Game {
         let redUserTeam = document.getElementById("red-user-team")
         let blueUserTeam = document.getElementById("blue-user-team")
         for(let i = 0; i < this.redTeam.length; i++) {
-            redUserTeam.innerHTML +=`
-            <section class="hero is-danger">
-                <div class="hero-body">
-                    <div class="container">
-                        <h1 class="title">
-                            ${this.redTeam[i]}
-                        </h1>
-                    </div>
-                </div>
-            </section>`
+            redUserTeam.innerHTML +=`<div class="box user-team-red">${this.redTeam[i]}</div>`
         }
         for(let i = 0; i < this.blueTeam.length; i++) {
-            blueUserTeam.innerHTML +=`
-            <section class="hero is-info">
-                <div class="hero-body">
-                    <div class="container">
-                        <h1 class="title">
-                            ${this.blueTeam[i]}
-                        </h1>
-                    </div>
-                </div>
-            </section>`
+            blueUserTeam.innerHTML +=`<div class="box user-team-blue">${this.blueTeam[i]}</div>`
         }
     }
 
@@ -270,9 +267,21 @@ class Game {
         console.log('userArray: ', userArray)
         this.users = userArray
         this.clearTeamBoard()
-        this.randomizeTeams()
+        this.putPlayersInTeams()
         this.renderTeamBoard()
     }
+
+    updateTeams(newRedTeam, newBlueTeam) {
+        this.redTeam = newRedTeam
+        this.blueTeam = newBlueTeam
+        let redUserTeam = document.getElementById("red-user-team")
+        let blueUserTeam = document.getElementById("blue-user-team")
+        redUserTeam.innerHTML = 'Red Team:'
+        blueUserTeam.innerHTML = 'Blue Team:'
+        this.renderTeamBoard()
+    }
+
+
 
     clearTeamBoard() {
         let redUserTeam = document.getElementById("red-user-team")
@@ -283,11 +292,8 @@ class Game {
         blueUserTeam.innerHTML = 'Blue Team:'
     }
 
-    randomizeTeams() {
+    putPlayersInTeams() {
         console.log('randomizing teams')
-        console.log(this.users)
-        let numUsers = this.users.length;    
-        //this.users = this.shuffleUsers()
         console.log(this.users)
         for(let i = 0; i < this.users.length; i++) {
             console.log(i + " " + this.users[i])
@@ -314,14 +320,6 @@ class Game {
         }
         return this.users
     }
-
-    getRedTeam() {
-        return this.redTeam;
-    }
-    getBlueTeam() {
-        return this.blueTeam;
-    }
-
 }
 
 

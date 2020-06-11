@@ -17,11 +17,15 @@ html, body {
 }
 
 #game-body {    
+    padding: 0 auto;
+    margin: 0 auto;
     display: none;
     width: 100%;
-    height: 100%;
+    height: 100vh;
 }
 
 #lobby-body {
     display: block;
+    width: 100%;
+    height: 100%;
 }

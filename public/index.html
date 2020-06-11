@@ -4,9 +4,11 @@
 		<title> Codenames </title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="assets/styles/stylesheet.css">
-		<link rel="stylesheet" href="assets/styles/stylesheet-game.css">
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
 		<link rel="stylesheet" href="https://unpkg.com/bulmaswatch/cyborg/bulmaswatch.min.css">
+		<!-- <link rel="stylesheet" href="assets/styles/stylesheet-game.css"> -->
+		<link rel="stylesheet" href="assets/styles/game.css">
+		<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;500;600;700&display=swap" rel="stylesheet">
 		<script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 	</head>
 	<body>
@@ -72,25 +74,39 @@
 	</div>
 	 <!-- Codenames Game HTML Code -->
 	<div id="game-body">
-        <div id="title">Codenames</div>
-        <div id="gameScore">Score:</div>
-		<div id="gameTurn"></div>
-		<div class="container is-fluid" id="teamBoard-container">
+        <section class="hero is-dark">
+			<div class="hero-body">
+			  <div class="container">
+				<h1 class="title has-text-centered" id="title">
+				  Codenames
+				</h1>
+			  </div>
+			</div>
+		  </section>
+        <div class="box has-text-centered"id="gameScore">Score:</div>
+		<div id="gameTurn" class="box has-text-centered"></div>
+		<div class="container" id="teamBoard-container">
 			<div class="columns">
-				<div id="red-user-team" class="column is-danger">
+				<div id="red-user-team" class="column">
 					Red Team
 				</div>
-				<div id ="blue-user-team" class="column is-info">
+				<div id="blue-user-team" class="column">
 					Blue Team
 				</div>
 			</div>
 		</div>
 		<div id="gameBoard">
-		
+
 		</div>
-		<button id="spymaster-button" class="button is-dark">Spymaster</button>
-		<button id="guesser-button" class="button is-dark">Guesser</button>
-		<button id="new-game-button" class="button is-dark">New Game</button>
+		<div id="teamButtons-container">
+			<button class="button is-danger" id="join-red-team">Join Red Team</button>
+			<button class="button is-info" id="join-blue-team">Join Blue Team</button>
+		</div>
+		<div id="roleButtons-container">
+			<button id="spymaster-button" class="button is-dark">Spymaster</button>
+			<button id="guesser-button" class="button is-dark">Guesser</button>
+			<button id="new-game-button" class="button is-dark">New Game</button>
+		</div>
 		<footer class="footer" id="footer">
 			<div class="content has-text-centered">
 			  <p>

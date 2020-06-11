@@ -112,6 +112,11 @@ io.on('connection', (socket) => {
         socket.to(roomID).emit('updateUserMap', userMap)
     })
 
+    socket.on('userJoinTeam', (team, userID, roomID) => {
+        socket.emit('userJoinTeam', team, userID)
+        socket.to(roomID).emit('userJoinTeam', team, userID)
+    })
+
     socket.on('new-game', function() {
         socket.emit('new-game')
     })

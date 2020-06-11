@@ -4,6 +4,8 @@ let joinButton = document.getElementById('join-room-button')
 let newGameButton = document.getElementById('new-game-button')
 let guesserButton = document.getElementById('guesser-button')
 let spymasterButton = document.getElementById('spymaster-button')
+let joinRedButton = document.getElementById('join-red-team')
+let joinBlueButton = document.getElementById('join-blue-team')
 let currentGame = new Game();
 let roomID;
 let users = [];
@@ -26,8 +28,12 @@ guesserButton.addEventListener("click", () => {
 spymasterButton.addEventListener("click", () => {
     currentGame.makeAllVisible();
 })
-
-
+joinRedButton.addEventListener("click", () => {
+    socket.emit('userJoinTeam', 'red-team', socket.id, roomID)
+})
+joinBlueButton.addEventListener("click", () => {
+    socket.emit('userJoinTeam', 'blue-team', socket.id, roomID)
+})
 
 // Handles any messages emited by the server and client
 socket.on('message', message => {
@@ -66,6 +72,25 @@ socket.on('clickGamePiece', (gamePieceID, userID) => {
     }
 })
 
+socket.on('userJoinTeam', (team, userID) => {
+    let user = userIDs[userID]
+    if(team == 'red-team') {
+        let userIndex = blueTeam.indexOf(user)
+        if(userIndex != undefined && userIndex > -1) {
+            blueTeam.splice(userIndex, 1)
+            redTeam.push(user)
+        }
+    }
+    else {
+        let userIndex = redTeam.indexOf(user)
+        if(userIndex != undefined && userIndex > -1) {
+            redTeam.splice(userIndex, 1)
+            blueTeam.push(user)
+        }
+    }
+    currentGame.updateTeams(redTeam, blueTeam)
+})
+
 
 socket.on('addData', game => {
     console.log( 'adding in data for new Game'
@@ -94,7 +119,6 @@ socket.on('updateUserMap', (userMap) => {
     userIDs = newUserMap
 })
 
-socket.on('')
 
 function createRoom() {
     let createARoomForm = document.getElementById('create-a-room')
@@ -116,7 +140,7 @@ function allowButtonsToBeClicked(gameRoom) {
     console.log(gameRoom)
     document.querySelectorAll('.game-piece').forEach(item => {
         item.addEventListener('click', event => {
-            let gamePieceID = event.path[0].id;
+            let gamePieceID = event.target.id;
             let userID = socket.id;
             console.log("userID: " + userID)
             console.log(gamePieceID + " " + gameRoom)

@@ -1,0 +1,80 @@
+.team-neutral {
+    background-color: antiquewhite;
+    color: black;
+}
+.team-red {
+    background-color: #f14668;
+    color: #fff;
+}
+.team-blue {
+    background-color: #3298dc;
+    color: #fff; 
+}
+.team-death {
+    background-color: black;
+    color: white;
+}
+.invisible-to-guesser {
+    background-color: white;
+    color: black;
+}
+
+
+
+#gameScore {
+    margin: 0 auto;
+
+}
+#gameTurn {
+    margin-bottom: 3.5em;
+}
+
+#gameBoard {
+    width: 50em;
+    margin: 0 auto;
+}
+
+.game-piece {
+    /*box-shadow: 0.5em 0.5em 0.75em 0 black; */
+    text-align: center;
+    transition: transform .2s;
+    font-family: Raleway;
+    font-weight: 600;
+    
+}
+
+.game-piece:hover {
+    transform: scale(1.25); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+
+#teamBoard-container {
+    width: 20em;
+    height: 20em;
+    float: left;
+}
+
+#teamButtons-container, #roleButtons-container {
+    display: block;
+    padding-top: 2em;
+}
+
+
+.user-team-red {
+    background-color: #f14668;
+    color: #fff;
+}
+.user-team-blue {
+    background-color: #3298dc;
+    color: #fff; 
+}
+
+
+
+#footer {
+    position: relative;
+    top: 25%;
+    width: 100%;
+    height: 5em;
+
+}

@@ -5,10 +5,6 @@ font-family: 'Raleway', sans-serif;
 
 
 */
-
-
-
-
 html, body {
     background-color: black;
     width: 100%;
@@ -33,14 +29,25 @@ html, body {
     text-align: center;
     color: white;
 }
-
+/*
 #gameTurn {
     font-family: 'Raleway', sans-serif;
     font-size: 20px;
     text-align: center;
     color: white;
 }
+*/
 
+#redScore {
+    font-family: Raleway;
+    font-weight: 600;
+    color: red;
+}
+#blueScore {
+    font-family: Raleway;
+    font-weight: 600;
+    color: blue;
+}
 
 #teamBoard-container {
     /*background-color:#2B2D42; */
@@ -49,37 +56,31 @@ html, body {
     float: left;
 }
 
+
 #join-red-team, #join-blue-team {
     border-radius: 10%;
 }
 
 #gameBoard {
+    display: block;
     background-color: #2B2D42;
     position: relative;
     top: 5em;
     left: 45em;
     width: 65em;
     height: 52.5em;
-    margin-right: auto;    
+    margin-right: auto; 
+    clear: both;   
 }
 
 .game-piece {
-    float: left;
     width: 10em;
     height: 7.5em;
-    background-color: #D1CA98;
-    margin-left: 1.5em;
-    margin-right: 1.5em;
-    margin-top: 1.5em;
-    margin-bottom: 1.5em;
-    box-shadow: 0.5em 0.5em 0.75em 0 black;
+    /*box-shadow: 0.5em 0.5em 0.75em 0 black; */
     text-align: center;
-    padding-right: -50%;
-    padding-top: 3em;
-    font-family: Raleway;
-    font-weight: 300;
     transition: transform .2s;
 }
+
 
 
 .game-piece:hover {
@@ -111,19 +112,6 @@ html, body {
     color: black !important;
 }
 
-
-.team-row::after {
-    content: "";
-    display: table;
-    clear: both;
-}
-
-
-.team-column {
-    float: left;
-    width: 7.5em;
-}
-
 .user-red-team {
     color: white;
 }
@@ -136,7 +124,9 @@ html, body {
     position: relative;
     float: left;
     top: 1.5em;
-    right: 3em;
+    right: 10em;
+    margin-right: 0.25em;
+    margin-left: 0.25em;
 }
 
 #footer {
