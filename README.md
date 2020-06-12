@@ -25,4 +25,9 @@ The goal for either team is to pick all the cards of their respective team befor
   - app.js -> represents server-side code, takes in 'emit's (message) from the client and broadcasts an event(such as flip a card) to rest of users
   - main.js -> represents client-side code, takes in 'emit's'(message) from server to update their own game
   - script.js -> holds the Game class, which stores all the users, teams, cards, and is changed from updates from main.js
+  
+### Current bugs/ideas to think about:
+- Removing clicking after game has won
+- Make website more responsive(buttons don't show up on all screens)
+- Add icons for roles
 
