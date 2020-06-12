@@ -1,9 +1,9 @@
-#Codenames
-###by Christopher Linscott
+# Codenames
+### by Christopher Linscott
 
 Link to website: https://linschris-codenames.glitch.me/
 
-###What is Codenames?
+### What is Codenames?
 
 It's a card game in which there are:
 *4 people form 2 teams:
@@ -20,7 +20,7 @@ The goal for either team is to pick all the cards of their respective team befor
     *A neutral card: The turn stops and switches to the enemy
     *A death card: Automatic lose: The team that picks this card loses the game automatically.
 
-###If you want to look deeper into source code:
+### If you want to look deeper into source code:
 - Specific files to look into:
   - app.js -> represents server-side code, takes in 'emit's (message) from the client and broadcasts an event(such as flip a card) to rest of users
   - main.js -> represents client-side code, takes in 'emit's'(message) from server to update their own game
