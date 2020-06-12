@@ -13,7 +13,9 @@ It's a card game in which there are:
 The goal for either team is to pick all the cards of their respective team before the other team.
 - So how a game will normally go is:
   - A spymaster gives a clue to hint the guessers toward their own team cards (Ex: 'Dog 3' to hint at ball, fetch, husky)
+   - Spymasters are denoted by a glasses emoji
   - The guessers will be given n + 1 tries (n being the number of cards the spymasters says his clue is meant to reveal) 
+   - Guessers are denoted by a question mark
   - If the guessers guess:
     *Their own team's card: The turn continues and they attempt to reveal more of their team's cards
     *The other team's card: The turn stops, the enemy team earns a point(losing a card they need to reveal) and becomes enemy's turn
@@ -29,5 +31,7 @@ The goal for either team is to pick all the cards of their respective team befor
 ### Current bugs/ideas to think about:
 - Removing clicking after game has won
 - Make website more responsive(buttons don't show up on all screens)
-- Add icons for roles
+- Make password for rooms optional (the roomid is already pretty secure to begin with)
+- Add custom words (Inspiration from horsepaste)
+- Add 'End Turn' button
 
