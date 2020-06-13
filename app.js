@@ -33,7 +33,7 @@ io.on('connection', (socket) => {
     socket.on('joinRoom', ({user, id, pass}) => {
         console.log(`User ${user} wants to join room ${id} with password ${pass}`)
         let roomToJoin = rooms[id];
-        if((user === '') || (id === '') || (pass === '')) {
+        if((user === '') || (id === '')) {
             socket.emit('error-message', 'You left something empty.')
         }
         else if(roomToJoin === undefined) {
@@ -62,7 +62,7 @@ io.on('connection', (socket) => {
     })
 
     socket.on('createRoom', ({user, id, pass}) => {
-        if((user === '') || (id === '') || (pass === '')) {
+        if((user === '') || (id === '')) {
             socket.emit('error-message', 'You have left something empty.')
         }
         else if(rooms[id] !== undefined) {
@@ -115,6 +115,16 @@ io.on('connection', (socket) => {
     socket.on('userJoinTeam', (team, userID, roomID) => {
         socket.emit('userJoinTeam', team, userID)
         socket.to(roomID).emit('userJoinTeam', team, userID)
+    })
+
+    socket.on('userChangeRole', (user, role, roomID) => {
+        console.log(user, role, roomID)
+        socket.emit('userRoleChange', user, role)
+        socket.to(roomID).emit('userRoleChange', user, role)
+    })
+
+    socket.on('endTurn', roomID => {
+        socket.to(roomID).emit('endTurn')
     })
 
     socket.on('new-game', function() {

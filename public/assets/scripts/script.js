@@ -31,7 +31,7 @@ class Game {
         this.redTeam = [];
         this.blueTeam = [];
         this.users = [];
-        //Game functions
+        this.userRoles = [];
     }
 
     addinData(gameData) {
@@ -41,6 +41,8 @@ class Game {
         this.maxBlue = this.teamBlueScore; 
         this.gameWords = gameData.gameWords;
         this.teams = gameData.teams;
+        this.users = gameData.users;
+        this.userRoles = gameData.userRoles;
         this.decideTurn();
     }
 
@@ -61,7 +63,7 @@ class Game {
     }
 
     adjustScore() {
-        document.getElementById("gameScore").innerHTML = `Score:<span id="redScore">${(this.teamRedScore - this.numRedFound)}</span> - <span id="blueScore">${(this.teamBlueScore - this.numBlueFound)}</span>`;
+        document.getElementById("gameScore").innerHTML = `Score: <span id='redScore'>${(this.teamRedScore - this.numRedFound)}</span> - <span id='blueScore'>${(this.teamBlueScore - this.numBlueFound)}</span>`;
         if(this.teamRedScore - this.numRedFound == 0) {
             let gameTurn = document.getElementById('gameTurn')
             gameTurn.innerHTML = "RED WINS!"
@@ -141,8 +143,7 @@ class Game {
             }
         }
         else if(currentGamePiece.classList.contains('team-neutral')) {
-            if(this.redTurn) this.makeBlueTurn();
-            else { this.makeRedTurn(); }
+            this.endTurn()
         }
         else {
             let gameTurn = document.getElementById('gameTurn')
@@ -170,6 +171,15 @@ class Game {
         gameTurn.innerHTML = "Currently... Red Turn." 
         gameTurn.classList.remove('team-blue')
         gameTurn.classList.add('team-red')
+    }
+
+    endTurn() {
+        if(this.redTurn) {
+            this.makeBlueTurn();
+        }
+        else { 
+            this.makeRedTurn(); 
+        }
     }
 
 
@@ -254,11 +264,22 @@ class Game {
         let teamBoard = document.getElementById("teamBoard")
         let redUserTeam = document.getElementById("red-user-team")
         let blueUserTeam = document.getElementById("blue-user-team")
-        for(let i = 0; i < this.redTeam.length; i++) {
-            redUserTeam.innerHTML +=`<div class="box user-team-red">${this.redTeam[i]}</div>`
-        }
-        for(let i = 0; i < this.blueTeam.length; i++) {
-            blueUserTeam.innerHTML +=`<div class="box user-team-blue">${this.blueTeam[i]}</div>`
+        console.log(this.users)
+        for(let i = 0; i < this.users.length; i++) {
+            if(this.redTeam.includes(this.users[i])) {
+                let indexOfUser = this.redTeam.indexOf(this.users[i])
+                redUserTeam.innerHTML +=`
+                <div class="box user-team-red">
+                    ${this.redTeam[indexOfUser]}${this.renderRole(this.userRoles[i])}
+                </div>`
+            }
+            if(this.blueTeam.includes(this.users[i])) {
+                let indexOfUser = this.blueTeam.indexOf(this.users[i])
+                blueUserTeam.innerHTML +=`
+                <div class="box user-team-blue">
+                    ${this.blueTeam[indexOfUser]}${this.renderRole(this.userRoles[i])}
+                </div>`
+            }
         }
     }
 
@@ -281,6 +302,23 @@ class Game {
         this.renderTeamBoard()
     }
 
+    updateRole(user, role) {
+        let userIndex = this.users.indexOf(user)
+        this.userRoles[userIndex] = role;
+        this.clearTeamBoard()
+        this.putPlayersInTeams()
+        this.renderTeamBoard()
+    }
+
+    renderRole(role) {
+        if(role == 'spymaster') {
+            return '<span class="icon has-text-dark"><i class="fas fa-glasses"></i></span>'
+        }
+        else {
+            return '<span class="icon has-text-dark"><i class="fas fa-question"></i></span>'
+        }
+    }
+
 
 
     clearTeamBoard() {
@@ -295,6 +333,7 @@ class Game {
     putPlayersInTeams() {
         console.log('randomizing teams')
         console.log(this.users)
+        console.log('this.userRoles=', this.userRoles)
         for(let i = 0; i < this.users.length; i++) {
             console.log(i + " " + this.users[i])
             if(i % 2 == 0) {
@@ -303,8 +342,12 @@ class Game {
             else {
                 this.blueTeam.push(this.users[i])
             }
+            if(this.userRoles[i] == undefined) {
+                this.userRoles.push('guesser')
+            }
         }
         console.log(this.users)
+        console.log(this.userRoles)
         console.log(this.redTeam)
         console.log(this.blueTeam)
     }

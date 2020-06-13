@@ -57,7 +57,7 @@
 						<div class="field-body">
 							<div class="field is-expanded">
 							<p class="control has-icons-left">
-								<input type="text" class="input" id="password" required>
+								<input type="text" class="input" id="password" placeholder="Optional">
 								<span class="icon is-left">
 									<i class="fas fa-key"></i>
 								</span>
@@ -74,7 +74,7 @@
 	</div>
 	 <!-- Codenames Game HTML Code -->
 	<div id="game-body">
-        <section class="hero is-dark">
+        <section class="hero is-dark is-desktop">
 			<div class="hero-body">
 			  <div class="container">
 				<h1 class="title has-text-centered" id="title">
@@ -83,14 +83,14 @@
 			  </div>
 			</div>
 		  </section>
-        <div class="box has-text-centered"id="gameScore">Score:</div>
-		<div id="gameTurn" class="box has-text-centered"></div>
-		<div class="container" id="teamBoard-container">
-			<div class="columns">
-				<div id="red-user-team" class="column">
+        <div class="box has-text-centered is-desktop" id="gameScore">Score: </div>
+		<div id="gameTurn" class="box has-text-centered is-desktop"></div>
+		<div class="container is-desktop" id="teamBoard-container">
+			<div class="columns is-desktop is-mobile">
+				<div id="red-user-team" class="column is-desktop is-mobile">
 					Red Team
 				</div>
-				<div id="blue-user-team" class="column">
+				<div id="blue-user-team" class="column is-desktop is-mobile">
 					Blue Team
 				</div>
 			</div>
@@ -106,6 +106,7 @@
 			<button id="spymaster-button" class="button is-dark">Spymaster</button>
 			<button id="guesser-button" class="button is-dark">Guesser</button>
 			<button id="new-game-button" class="button is-dark">New Game</button>
+			<button id="end-turn-button" class="button is-dark is-desktop">End Turn</button>
 		</div>
 		<footer class="footer" id="footer">
 			<div class="content has-text-centered">

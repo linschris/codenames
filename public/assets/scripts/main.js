@@ -4,6 +4,7 @@ let joinButton = document.getElementById('join-room-button')
 let newGameButton = document.getElementById('new-game-button')
 let guesserButton = document.getElementById('guesser-button')
 let spymasterButton = document.getElementById('spymaster-button')
+let endTurnButton = document.getElementById('end-turn-button')
 let joinRedButton = document.getElementById('join-red-team')
 let joinBlueButton = document.getElementById('join-blue-team')
 let currentGame = new Game();
@@ -24,15 +25,27 @@ newGameButton.addEventListener("click", () => {
 })
 guesserButton.addEventListener("click", () => {
     currentGame.makeAllInvisibleButClicked();
+    let user = userIDs[socket.id]
+    socket.emit('userChangeRole', user, 'guesser', roomID)
+    socket.emit('game', currentGame)
 })
 spymasterButton.addEventListener("click", () => {
     currentGame.makeAllVisible();
+    let user = userIDs[socket.id]
+    socket.emit('userChangeRole', user, 'spymaster', roomID)
 })
 joinRedButton.addEventListener("click", () => {
     socket.emit('userJoinTeam', 'red-team', socket.id, roomID)
 })
 joinBlueButton.addEventListener("click", () => {
     socket.emit('userJoinTeam', 'blue-team', socket.id, roomID)
+})
+endTurnButton.addEventListener("click", () => {
+    let user = userIDs[socket.id]
+    if((currentGame.redTurn && currentGame.redTeam.includes(user)) || (currentGame.blueTurn && currentGame.blueTeam.includes(user))) {
+        socket.emit('endTurn', roomID)
+        currentGame.endTurn()
+    }
 })
 
 // Handles any messages emited by the server and client
@@ -117,6 +130,14 @@ socket.on('createUserMap', (user, userID) => {
 socket.on('updateUserMap', (userMap) => {
     let newUserMap = {...userIDs, ...userMap}
     userIDs = newUserMap
+})
+
+socket.on('userRoleChange', (user, role) => {
+    currentGame.updateRole(user, role)
+})
+
+socket.on('endTurn', function() {
+    currentGame.endTurn()
 })
 
 

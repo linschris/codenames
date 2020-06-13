@@ -1,3 +1,8 @@
+#game-body {
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+
 .team-neutral {
     background-color: antiquewhite;
     color: black;
@@ -19,14 +24,17 @@
     color: black;
 }
 
-
-
 #gameScore {
     margin: 0 auto;
 
 }
 #gameTurn {
     margin-bottom: 3.5em;
+}
+
+#end-turn-button {
+    position: absolute;
+    left: 80vw;
 }
 
 #gameBoard {
@@ -55,9 +63,12 @@
 }
 
 #teamButtons-container, #roleButtons-container {
-    display: block;
+    position: relative;
     padding-top: 2em;
+    width: 20vw;
+    height: 2.5vw;
 }
+
 
 
 .user-team-red {
@@ -69,12 +80,22 @@
     color: #fff; 
 }
 
+#redScore {
+    color:#f14668;
+}
+#blueScore {
+    color:#3298dc;
+}
 
+.icon.has-text-dark {
+    float: right;
+}
 
 #footer {
-    position: relative;
-    top: 25%;
-    width: 100%;
-    height: 5em;
+    position: absolute;
+    height: 7.5em;
+    top: calc(100vh - 7.5em);
+    width: 100vw;
+    
 
 }
