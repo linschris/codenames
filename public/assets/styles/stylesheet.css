@@ -29,3 +29,19 @@ html, body {
     width: 100%;
     height: 100%;
 }
+
+#customWordBox {
+    width: 25vw;
+    height: 30vw;
+    display: none;
+}
+#custom-words-button {
+    margin: 0 auto;
+    width: 10vw;
+    left: calc(50vw - 5vw);
+}
+
+#carrotRight {
+    right: 1vw;
+    position: absolute;
+}

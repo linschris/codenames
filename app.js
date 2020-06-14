@@ -34,7 +34,7 @@ io.on('connection', (socket) => {
         console.log(`User ${user} wants to join room ${id} with password ${pass}`)
         let roomToJoin = rooms[id];
         if((user === '') || (id === '')) {
-            socket.emit('error-message', 'You left something empty.')
+            socket.emit('error-message', 'Please enter a username and room ID.')
         }
         else if(roomToJoin === undefined) {
                 socket.emit('error-message', 'Room not found.')

@@ -1,6 +1,7 @@
 const socket = io("http://localhost:3000");
 let createButton = document.getElementById('create-room-button')
 let joinButton = document.getElementById('join-room-button')
+let customWordsButton = document.getElementById('custom-words-button')
 let newGameButton = document.getElementById('new-game-button')
 let guesserButton = document.getElementById('guesser-button')
 let spymasterButton = document.getElementById('spymaster-button')
@@ -20,6 +21,10 @@ createButton.addEventListener("click", () => {
 joinButton.addEventListener("click", () => {
     joinRoom();
 })
+customWordsButton.addEventListener("click", () => {
+    showCustomWordTextBox();
+    turnCarrot();
+})
 newGameButton.addEventListener("click", () => {
     makeNewGame()
 })
@@ -27,7 +32,6 @@ guesserButton.addEventListener("click", () => {
     currentGame.makeAllInvisibleButClicked();
     let user = userIDs[socket.id]
     socket.emit('userChangeRole', user, 'guesser', roomID)
-    socket.emit('game', currentGame)
 })
 spymasterButton.addEventListener("click", () => {
     currentGame.makeAllVisible();
@@ -42,7 +46,7 @@ joinBlueButton.addEventListener("click", () => {
 })
 endTurnButton.addEventListener("click", () => {
     let user = userIDs[socket.id]
-    if((currentGame.redTurn && currentGame.redTeam.includes(user)) || (currentGame.blueTurn && currentGame.blueTeam.includes(user))) {
+    if(((currentGame.redTurn && currentGame.redTeam.includes(user)) || (currentGame.blueTurn && currentGame.blueTeam.includes(user))) && !currentGame.win) {
         socket.emit('endTurn', roomID)
         currentGame.endTurn()
     }
@@ -82,6 +86,11 @@ socket.on('clickGamePiece', (gamePieceID, userID) => {
     console.log(blueTeam.includes(user))
     if(redTeam.includes(user) && currentGame.redTurn || blueTeam.includes(user) && currentGame.blueTurn) {
         currentGame.showGamePiece(gamePieceID);
+    }
+    console.log('WIN OR NOT?' + currentGame.win)
+    if(currentGame.win) {
+        console.log('WINNERs')
+        disAllowCardsToBeClicked() 
     }
 })
 
@@ -157,7 +166,32 @@ function joinRoom() {
     socket.emit('joinRoom', {user, id, pass})
 }
 
+function showCustomWordTextBox() {
+    let customWordTextBox = document.getElementById('customWordBox')
+    console.log(customWordTextBox.style.display)
+    if(customWordTextBox.style.display != 'block') {
+        customWordTextBox.style.display = 'block';
+    }
+    else {
+        customWordTextBox.style.display = 'none';
+    }
+}
+
+function turnCarrot() {
+    let carrot = document.getElementById('carrotRight');
+    console.log(carrot.classList)
+    if(carrot.classList.contains('fa-caret-right')) {
+        carrot.classList.remove('fa-caret-right')
+        carrot.classList.add('fa-caret-down')
+    }
+    else {
+        carrot.classList.remove('fa-caret-down')
+        carrot.classList.add('fa-caret-right')
+    }
+}
+
 function allowButtonsToBeClicked(gameRoom) {
+    if(gameRoom == undefined) gameRoom = roomID
     console.log(gameRoom)
     document.querySelectorAll('.game-piece').forEach(item => {
         item.addEventListener('click', event => {
@@ -167,18 +201,16 @@ function allowButtonsToBeClicked(gameRoom) {
             console.log(gamePieceID + " " + gameRoom)
             socket.emit('gamePieceClick', gamePieceID, gameRoom, userID)
         })
+        item.style.pointerEvents = 'auto'
     })
 }
 
-function disallowButtonsToBeClicked(gameRoom) {
-    document.querySelectorAll('.game-piece').forEach(item => {
-        item.removeEventListener('click', event => {
-            let gamePieceID = event.path[0].id;
-            let userID = socket.id;
-            console.log("userID: " + userID)
-            socket.emit('gamePieceClick', gamePieceID, gameRoom, userID)
-        })
-    })
+function disAllowCardsToBeClicked() {
+    console.log('disallowing buttons to be clicked')
+    for(let i = 1; i <= 25; i++){
+        var currentGamePiece = document.getElementById('game-piece'.concat(i))
+        currentGamePiece.style.pointerEvents = 'none';
+    }
 }
 
     
@@ -189,10 +221,13 @@ function putInGame(id) {
     console.log(id)
     let gameBody = document.getElementById("game-body");
     let lobbyBody = document.getElementById("lobby-body");
+    let customWordBox = document.getElementById('customWords')
     gameBody.style.display = 'block';
     lobbyBody.style.display = 'none';
     gameBody.style.backgroundColor = 'black';
     currentGame.setUpGameValues();
+    console.log('custom words that are being are: ' + customWords.value)
+    currentGame.addinCustomWords(customWords.value)
     currentGame.renderBoard();
     redTeam = currentGame.redTeam;
     blueTeam = currentGame.blueTeam;
@@ -218,6 +253,9 @@ function joinGame(id, gameData) {
 function makeNewGame() {
     console.log('NEW GAME COMING TO USER')
     currentGame = new Game();
+    currentGame.users = users;
+    currentGame.updateTeams(redTeam, blueTeam)
     currentGame.newBoard();
+    allowButtonsToBeClicked()
     socket.emit('game', currentGame, roomID);
 }

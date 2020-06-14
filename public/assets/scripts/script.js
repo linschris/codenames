@@ -27,11 +27,13 @@ class Game {
         this.maxDeath = 1; 
         this.maxNeutral = 7;
         this.gameWords = [];
+        this.customWords = [];
         this.teams = [];
         this.redTeam = [];
         this.blueTeam = [];
         this.users = [];
         this.userRoles = [];
+        this.win = false;
     }
 
     addinData(gameData) {
@@ -44,6 +46,40 @@ class Game {
         this.users = gameData.users;
         this.userRoles = gameData.userRoles;
         this.decideTurn();
+    }
+
+    addinCustomWords(customWords) {
+        this.customWordsArray = customWords.split(', ')
+        if(this.customWordsArray.length == 0) {
+            return;
+        }
+        else if(this.customWordsArray.length < 25) {
+            let randomWordArray = [];
+            for(let i = 0; i < 25; i++) {
+                let randomNumber = Math.round(Math.random() * 10)
+                if(randomNumber > 6) {
+                    randomNumber = Math.round(Math.random() * words.length);
+                    let randomWord = words[randomNumber];
+                    randomWordArray.push(randomWord)
+                }
+                else {
+                    randomNumber = Math.round(Math.random() * this.customWordsArray.length - 1);
+                    let randomWord = this.customWordsArray[randomNumber];
+                    randomWordArray.push(randomWord)
+                }
+            }
+            this.gameWords = randomWordArray
+        }
+        else {
+            let currentCustomWordsArray = [];
+            for(let i = 0; i < 25; i++) {
+                let randomNumber = Math.round(Math.random() * this.customWordsArray.length);
+                let randomWord = this.customWordsArray[randomNumber];
+                currentCustomWordsArray.push(randomWord)
+            }
+            this.gameWords = currentCustomWordsArray
+        }
+        
     }
 
     makeNewGame(gameData) {
@@ -67,10 +103,12 @@ class Game {
         if(this.teamRedScore - this.numRedFound == 0) {
             let gameTurn = document.getElementById('gameTurn')
             gameTurn.innerHTML = "RED WINS!"
+            this.gameWin()
         }
         if(this.teamBlueScore - this.numBlueFound == 0) {
             let gameTurn = document.getElementById('gameTurn')
             gameTurn.innerHTML = "BLUE WINS!"
+            this.gameWin()
         }
     }
 
@@ -97,17 +135,17 @@ class Game {
         }
     }
     calculateRandomTeams(numRed, numBlue, numDeath, numNeutral) {
-        let randomTeamNumber = Math.floor(Math.random() * 4 + 1);
-        if(randomTeamNumber == 4 && numDeath < this.maxDeath) { 
+        let randomTeamNumber = Math.floor(Math.random() * 100 + 1);
+        if(randomTeamNumber > 90 && numDeath < this.maxDeath) { 
             this.addDeath();
         }
-        else if(randomTeamNumber == 3 && numBlue < this.maxBlue) { 
+        else if(randomTeamNumber > 50 && numBlue < this.maxBlue) { 
             this.addBlue();
         }
-        else if(randomTeamNumber == 2 && numRed < this.maxRed) { 
+        else if(randomTeamNumber > 25 && numRed < this.maxRed) { 
             this.addRed();
         }
-        else if(randomTeamNumber == 1 && numNeutral < this.maxNeutral) { 
+        else if(randomTeamNumber >= 1 && numNeutral < this.maxNeutral) { 
             this.addNeutral();
         }
         else {
@@ -149,9 +187,11 @@ class Game {
             let gameTurn = document.getElementById('gameTurn')
             if(this.redTurn) {
                 gameTurn.innerHTML = "BLUE WINS!"
+                this.gameWin()
             }
             else {
                 gameTurn.innerHTML = "RED WINS!"
+                this.gameWin()
             }
         }
     }
@@ -180,6 +220,10 @@ class Game {
         else { 
             this.makeRedTurn(); 
         }
+    }
+
+    gameWin() {
+        this.win = true;
     }
 
 
@@ -244,7 +288,7 @@ class Game {
     }
 
     newWordsAndTeams() {
-        for(let i = 1; i < 25; i++) {
+        for(let i = 1; i <= 25; i++) {
             let currentGamePiece = document.getElementById('game-piece'.concat(i));
             currentGamePiece.innerHTML = this.gameWords[i-1]
             currentGamePiece.classList.add(this.teams[i-1])
@@ -253,7 +297,7 @@ class Game {
 
 
     clearBoard() {
-        for(let i = 1; i < 25; i++) {
+        for(let i = 1; i <= 25; i++) {
             let currentGamePiece = document.getElementById('game-piece'.concat(i));
             this.removeClasses(currentGamePiece)
             currentGamePiece.innerHTML = '';
@@ -305,8 +349,7 @@ class Game {
     updateRole(user, role) {
         let userIndex = this.users.indexOf(user)
         this.userRoles[userIndex] = role;
-        this.clearTeamBoard()
-        this.putPlayersInTeams()
+        this.clearJustTeamBoard()
         this.renderTeamBoard()
     }
 
@@ -329,18 +372,26 @@ class Game {
         redUserTeam.innerHTML = 'Red Team:'
         blueUserTeam.innerHTML = 'Blue Team:'
     }
+    clearJustTeamBoard() {
+        let redUserTeam = document.getElementById("red-user-team")
+        let blueUserTeam = document.getElementById("blue-user-team")
+        redUserTeam.innerHTML = 'Red Team:'
+        blueUserTeam.innerHTML = 'Blue Team:'
+    }
+    
 
     putPlayersInTeams() {
         console.log('randomizing teams')
         console.log(this.users)
         console.log('this.userRoles=', this.userRoles)
-        for(let i = 0; i < this.users.length; i++) {
-            console.log(i + " " + this.users[i])
-            if(i % 2 == 0) {
-                this.redTeam.push(this.users[i])
-            }
-            else {
-                this.blueTeam.push(this.users[i])
+        for(let i = 0 ; i < this.users.length ; i++) {
+            if(!this.blueTeam.includes(this.users[i]) || !this.redTeam.includes(this.users[i])) {
+                if(i % 2 == 0) {
+                    this.redTeam.push(this.users[i])
+                }
+                else {
+                    this.blueTeam.push(this.users[i])
+                }
             }
             if(this.userRoles[i] == undefined) {
                 this.userRoles.push('guesser')
