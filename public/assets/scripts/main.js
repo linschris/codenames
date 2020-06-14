@@ -227,7 +227,7 @@ function putInGame(id) {
     gameBody.style.backgroundColor = 'black';
     currentGame.setUpGameValues();
     console.log('custom words that are being are: ' + customWords.value)
-    currentGame.addinCustomWords(customWords.value)
+    if(customWords.value !== '') currentGame.addinCustomWords(customWords.value)
     currentGame.renderBoard();
     redTeam = currentGame.redTeam;
     blueTeam = currentGame.blueTeam;
