@@ -6,10 +6,10 @@ Link to website: https://linschris-codenames.glitch.me/
 ### What is Codenames?
 
 It's a card game in which there are:
-*4 people form 2 teams:
-  *In each of these teams, there are two roles:
-    *Spymasters: These people can see the 'teams' of the cards (which cards are red, blue, neutral, or death)
-    *Guessers: These people, from clues of the spymaster, are meant to guess only the cards of their team.
+* 4 people form 2 teams:
+  * In each of these teams, there are two roles:
+    * Spymasters: These people can see the 'teams' of the cards (which cards are red, blue, neutral, or death)
+    * Guessers: These people, from clues of the spymaster, are meant to guess only the cards of their team.
 The goal for either team is to pick all the cards of their respective team before the other team.
 - So how a game will normally go is:
   - A spymaster gives a clue to hint the guessers toward their own team cards (Ex: 'Dog 3' to hint at ball, fetch, husky)
@@ -29,9 +29,6 @@ The goal for either team is to pick all the cards of their respective team befor
   - script.js -> holds the Game class, which stores all the users, teams, cards, and is changed from updates from main.js
   
 ### Current bugs/ideas to think about:
-- Removing clicking after game has won
 - Make website more responsive(buttons don't show up on all screens)
-- Make password for rooms optional (the roomid is already pretty secure to begin with)
 - Add custom words (Inspiration from horsepaste)
-- Add 'End Turn' button
 
