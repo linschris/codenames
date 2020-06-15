@@ -49,22 +49,30 @@ class Game {
     }
 
     addinCustomWords(customWords) {
-        this.customWordsArray = customWords.split(', ')
+        this.customWordsArray = (customWords.trim()).split(',')
         if(this.customWordsArray.length == 0) {
             return;
         }
         else if(this.customWordsArray.length < 25) {
             let randomWordArray = [];
+            let numCustomWords = 0;
+            let maxNumberCustomWords = this.customWordsArray.length
+            console.log(words.length)
             for(let i = 0; i < 25; i++) {
                 let randomNumber = Math.round(Math.random() * 10)
-                if(randomNumber > 6) {
-                    randomNumber = Math.round(Math.random() * words.length);
-                    let randomWord = words[randomNumber];
-                    randomWordArray.push(randomWord)
+                if(randomNumber > 6 && numCustomWords < maxNumberCustomWords) {
+                    randomNumber = Math.floor(Math.random() * this.customWordsArray.length);
+                    console.log(randomNumber + ' ' + randomNumber)
+                    let randomWord = this.customWordsArray[randomNumber];
+                    console.log('hit ehre!')
+                    randomWordArray.push(randomWord)   
+                    numCustomWords++;
                 }
                 else {
-                    randomNumber = Math.round(Math.random() * this.customWordsArray.length - 1);
-                    let randomWord = this.customWordsArray[randomNumber];
+                    randomNumber = Math.floor(Math.random() * words.length);
+                    let randomWord = words[randomNumber];
+                    console.log('hit here12ew! 2')
+                    console.log(randomNumber + ',' + randomNumber)
                     randomWordArray.push(randomWord)
                 }
             }
@@ -73,7 +81,9 @@ class Game {
         else {
             let currentCustomWordsArray = [];
             for(let i = 0; i < 25; i++) {
+                console.log(this.customWordsArray.length)
                 let randomNumber = Math.round(Math.random() * this.customWordsArray.length);
+                console.log(randomNumber)
                 let randomWord = this.customWordsArray[randomNumber];
                 currentCustomWordsArray.push(randomWord)
             }
