@@ -2,6 +2,9 @@
     overflow-y: hidden;
     overflow-x: hidden;
 }
+body::-webkit-scrollbar {
+    display: none;
+}
 
 .team-neutral {
     background-color: antiquewhite;
@@ -62,13 +65,22 @@
     float: left;
 }
 
-#teamButtons-container, #roleButtons-container {
-    position: relative;
-    padding-top: 2em;
-    width: 20vw;
-    height: 2.5vw;
+.buttons-container {
+    width: 15vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-bottom: 1em;
+    margin-right: 0.5em;
+    margin-left: 2em;
 }
 
+#join-red-team {
+    margin-right: 10px;
+}
+#new-game-button {
+    align-self: flex-start;
+}
 
 
 .user-team-red {
@@ -98,4 +110,13 @@
     width: 100vw;
     
 
+}
+
+@media (max-width: 2000px) {
+    #game-body {
+        height: 140vh;
+    }
+    #footer {
+        top: 125vh;
+    }
 }

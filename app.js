@@ -19,6 +19,9 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.get('/', (req, res) => {
     res.sendFile(homePage)
 })
+app.get('/words', (req, res) => {
+    res.sendFile(__dirname + '/public/assets/scripts/words.js')
+})
 
 // When a user connects, logs them as a connection. io.on acts as a handler.
 // The socket arrow function is representative of a connected web socket to the user.
