@@ -31,5 +31,4 @@ The goal for either team is to pick all the cards of their respective team befor
 ### Current bugs/ideas to think about:
 - Make website more responsive(buttons don't show up on all screens)
 - Fix custom words (A bit buggy at the moment).
-- Add word packs(NSFW/kinky, langauges, etc.)
 
